@@ -171,15 +171,26 @@ function App() {
 
   //Mounted & Unmounted  => Gắn vào và Tháo ra
 
+  // const [show , setShow] = useState(false)
+
+  // return (
+  //   <div style={{ padding:20 }}>
+  //     <button onClick={() => setShow(!show)}>Toggle</button>
+  //     {show && <Content />}
+  //   </div>
+  // )
+
+
+  //useEffect
+
   const [show , setShow] = useState(false)
 
   return (
-    <div style={{ padding:20 }}>
+    <div style={{ padding: 20 }}>
       <button onClick={() => setShow(!show)}>Toggle</button>
       {show && <Content />}
     </div>
   )
-
 
 }
 
