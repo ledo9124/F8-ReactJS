@@ -1,5 +1,6 @@
 import { useState } from 'react'
-
+import Content from './Content'
+ 
 // const gifts = [
 //   'CPU i9' ,
 //   'RAM 32GB RBG',
@@ -114,58 +115,71 @@ function App() {
   //   </div>
   // )
 
-  const [job , setJob] = useState('')
+  //Todolist with useState
+  // const [job , setJob] = useState('')
 
-  const [jobs , setJobs] = useState(() => {
-    const storageJobs = JSON.parse(localStorage.getItem('jobs'))
+  // const [jobs , setJobs] = useState(() => {
+  //   const storageJobs = JSON.parse(localStorage.getItem('jobs'))
 
-    return storageJobs ?? []
-  })
+  //   return storageJobs ?? []
+  // })
 
 
-  const handleSubmit = () => {
-    setJobs(pver => {
-      const newJobs = [...pver , job];
+  // const handleSubmit = () => {
+  //   setJobs(pver => {
+  //     const newJobs = [...pver , job];
 
-      const jsonJobs = JSON.stringify(newJobs)
+  //     const jsonJobs = JSON.stringify(newJobs)
 
-      localStorage.setItem('jobs' , jsonJobs)
+  //     localStorage.setItem('jobs' , jsonJobs)
 
-      return newJobs
-    })
-    setJob('')
-  }
+  //     return newJobs
+  //   })
+  //   setJob('')
+  // }
 
-  const handleDLT = (id) => {
-    jobs.splice(id , 1)
-    let jobsDLT = [...jobs]
+  // const handleDLT = (id) => {
+  //   jobs.splice(id , 1)
+  //   let jobsDLT = [...jobs]
     
-    localStorage.setItem('jobs' , JSON.stringify(jobsDLT))
+  //   localStorage.setItem('jobs' , JSON.stringify(jobsDLT))
 
-    setJobs(jobsDLT);
-  }
+  //   setJobs(jobsDLT);
+  // }
+
+  // return (
+  //   <div style={{ padding:20 }}>
+  //     <input 
+  //       value={job}
+  //       onChange={e => setJob(e.target.value)}
+  //     />
+  //     <button onClick={handleSubmit}>Add</button>
+
+  //     <ul>
+  //       {jobs.map((job , index) => (
+  //         <div className='job' key={index}>
+  //           <li>{job}</li>
+  //           <button
+  //             style={{cursor:'pointer'}}
+  //             onClick={() => handleDLT(index)}
+  //           >X</button>
+  //         </div>
+  //       ))}
+  //     </ul>
+  //   </div>
+  // )
+
+  //Mounted & Unmounted  => Gắn vào và Tháo ra
+
+  const [show , setShow] = useState(false)
 
   return (
     <div style={{ padding:20 }}>
-      <input 
-        value={job}
-        onChange={e => setJob(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Add</button>
-
-      <ul>
-        {jobs.map((job , index) => (
-          <div className='job' key={index}>
-            <li>{job}</li>
-            <button
-              style={{cursor:'pointer'}}
-              onClick={() => handleDLT(index)}
-            >X</button>
-          </div>
-        ))}
-      </ul>
+      <button onClick={() => setShow(!show)}>Toggle</button>
+      {show && <Content />}
     </div>
   )
+
 
 }
 
