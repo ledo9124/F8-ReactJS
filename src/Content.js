@@ -9,6 +9,8 @@ import { useEffect , useState } from 'react'
 // - Callback sẽ được gọi lại mỗi khi dependencies thay đổi
 
 //1. Callback luôn được gọi sau khi component mounted
+//2. Cleanup function luôn được gọi trước khi component unmounted
+//3. Cleanup function luôn được gọi trước khi callback được gọi (trừ lần monted)
 
 
 // VD event scroll
@@ -111,36 +113,68 @@ function Content() {
 
 // useEffect with timer functions
 
-    const [countdown , setCountdown] = useState(180)
-    const [countdown1 , setCountdown1] = useState(180)
+    // const [countdown , setCountdown] = useState(180)
+    // const [countdown1 , setCountdown1] = useState(180)
+
+    // useEffect(() => {
+    //     const timerID = setInterval(() => {
+    //         setCountdown(pver => pver - 1);
+    //     } , 1000)
+
+    //     return () => {
+    //         clearInterval(timerID)
+    //     }
+    // } , [])
+
+    // useEffect(() => {
+    //     const timerID = setTimeout(() => {
+    //         setCountdown1(countdown1 - 1);
+    //     } , 1000)
+
+    //     return () => {
+    //         clearInterval(timerID)
+    //     }
+    // } , [countdown1])
+
+    // return (
+    //     <div>
+    //         {countdown}
+    //         {countdown1}
+    //     </div>
+    // )
+
+// useEffect with preview avatar
+
+
+    const [avatar , setAvatar] = useState()
 
     useEffect(() => {
-        const timerID = setInterval(() => {
-            setCountdown(pver => pver - 1);
-        } , 1000)
-
         return () => {
-            clearInterval(timerID)
+            avatar && URL.revokeObjectURL(avatar.preview)
+            console.log('clear');
         }
-    } , [])
+    } , [avatar])
 
-    useEffect(() => {
-        const timerID = setTimeout(() => {
-            setCountdown1(countdown1 - 1);
-        } , 1000)
+    const handlePreviewAvatar = (e) => {
+        const file = e.target.files[0]
 
-        return () => {
-            clearInterval(timerID)
-        }
-    } , [countdown1])
+        file.preview = URL.createObjectURL(file)
+
+        setAvatar(file)
+    }
 
     return (
         <div>
-            {countdown}
-            {countdown1}
+            <input 
+                type="file"
+                onChange={handlePreviewAvatar}
+            />
+
+            {avatar && (
+                <img src={avatar.preview}  width="80%" />
+            )}
         </div>
     )
-
 
 }
 
