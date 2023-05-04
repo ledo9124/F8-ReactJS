@@ -88,26 +88,59 @@ function Content() {
 
 // VD resize
 
-    const [width , setWidth] = useState(window.innerWidth)
+//     const [width , setWidth] = useState(window.innerWidth)
+
+//     useEffect(() => {
+
+//         const handleResize = () => {
+//             setWidth(window.innerWidth)
+//         }
+
+//         window.addEventListener('resize' , handleResize)
+
+//         return () => {
+//             window.removeEventListener('resize' , handleResize)
+//         }
+//     })
+
+//     return (
+//         <div>
+//             <h1>{width}</h1>
+//         </div>
+//     )
+
+// useEffect with timer functions
+
+    const [countdown , setCountdown] = useState(180)
+    const [countdown1 , setCountdown1] = useState(180)
 
     useEffect(() => {
-
-        const handleResize = () => {
-            setWidth(window.innerWidth)
-        }
-
-        window.addEventListener('resize' , handleResize)
+        const timerID = setInterval(() => {
+            setCountdown(pver => pver - 1);
+        } , 1000)
 
         return () => {
-            window.removeEventListener('resize' , handleResize)
+            clearInterval(timerID)
         }
-    })
+    } , [])
+
+    useEffect(() => {
+        const timerID = setTimeout(() => {
+            setCountdown1(countdown1 - 1);
+        } , 1000)
+
+        return () => {
+            clearInterval(timerID)
+        }
+    } , [countdown1])
 
     return (
         <div>
-            <h1>{width}</h1>
+            {countdown}
+            {countdown1}
         </div>
     )
+
 
 }
 
