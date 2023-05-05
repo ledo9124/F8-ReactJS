@@ -16,6 +16,22 @@ import { useEffect , useState } from 'react'
 // VD event scroll
 // const tabs = ['posts' , 'comments' , 'albums']
 
+// VD useEffect with fake chat App
+const lessons = [
+    {
+        id: 1,
+        name: 'React JS'
+    },
+    {
+        id: 2,
+        name: 'Javascript'
+    },
+    {
+        id: 3,
+        name: 'HTML & CSS'
+    }
+];
+
 function Content() {
 
 //     const [title , setTitle] = useState('')
@@ -146,36 +162,70 @@ function Content() {
 // useEffect with preview avatar
 
 
-    const [avatar , setAvatar] = useState()
+    // const [avatar , setAvatar] = useState()
+
+    // useEffect(() => {
+    //     return () => {
+    //         avatar && URL.revokeObjectURL(avatar.preview)
+    //         console.log('clear');
+    //     }
+    // } , [avatar])
+
+    // const handlePreviewAvatar = (e) => {
+    //     const file = e.target.files[0]
+
+    //     file.preview = URL.createObjectURL(file)
+
+    //     setAvatar(file)
+    // }
+
+    // return (
+    //     <div>
+    //         <input 
+    //             type="file"
+    //             onChange={handlePreviewAvatar}
+    //         />
+
+    //         {avatar && (
+    //             <img src={avatar.preview}  width="80%" />
+    //         )}
+    //     </div>
+    // )
+
+    // useEffect with fake chat App
+
+    const [lessonID , setLessonID] = useState(1)
 
     useEffect(() => {
-        return () => {
-            avatar && URL.revokeObjectURL(avatar.preview)
-            console.log('clear');
+
+        const handleEvent = ({ detail }) => {
+            console.log(detail);
         }
-    } , [avatar])
 
-    const handlePreviewAvatar = (e) => {
-        const file = e.target.files[0]
+        window.addEventListener(`lesson-${lessonID}` , handleEvent)
 
-        file.preview = URL.createObjectURL(file)
-
-        setAvatar(file)
-    }
+        return () => {
+            window.removeEventListener(`lesson-${lessonID}` , handleEvent)
+        }
+    } , [lessonID])
 
     return (
         <div>
-            <input 
-                type="file"
-                onChange={handlePreviewAvatar}
-            />
-
-            {avatar && (
-                <img src={avatar.preview}  width="80%" />
-            )}
+            {lessons.map(lesson => (
+                <li
+                    key={lesson.id}
+                    style={{
+                        color: lesson.id === lessonID ?
+                        'red' : 'black',
+                        cursor: 'pointer'
+                    }}
+                    onClick={() => setLessonID(lesson.id)}
+                >
+                    {lesson.name}
+                </li>
+            ))}
         </div>
     )
-
 }
 
 export default Content;
