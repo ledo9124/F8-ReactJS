@@ -1,4 +1,4 @@
-import { useEffect , useState } from 'react'
+import { useEffect, useLayoutEffect , useState } from 'react'
 
 //1. useEffect(callback)
 // - Gọi callcback mỗi khi re-render
@@ -17,20 +17,20 @@ import { useEffect , useState } from 'react'
 // const tabs = ['posts' , 'comments' , 'albums']
 
 // VD useEffect with fake chat App
-const lessons = [
-    {
-        id: 1,
-        name: 'React JS'
-    },
-    {
-        id: 2,
-        name: 'Javascript'
-    },
-    {
-        id: 3,
-        name: 'HTML & CSS'
-    }
-];
+// const lessons = [
+//     {
+//         id: 1,
+//         name: 'React JS'
+//     },
+//     {
+//         id: 2,
+//         name: 'Javascript'
+//     },
+//     {
+//         id: 3,
+//         name: 'HTML & CSS'
+//     }
+// ];
 
 function Content() {
 
@@ -194,38 +194,65 @@ function Content() {
 
     // useEffect with fake chat App
 
-    const [lessonID , setLessonID] = useState(1)
+    // const [lessonID , setLessonID] = useState(1)
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const handleEvent = ({ detail }) => {
-            console.log(detail);
+    //     const handleEvent = ({ detail }) => {
+    //         console.log(detail);
+    //     }
+
+    //     window.addEventListener(`lesson-${lessonID}` , handleEvent)
+
+    //     return () => {
+    //         window.removeEventListener(`lesson-${lessonID}` , handleEvent)
+    //     }
+    // } , [lessonID])
+
+    // return (
+    //     <div>
+    //         {lessons.map(lesson => (
+    //             <li
+    //                 key={lesson.id}
+    //                 style={{
+    //                     color: lesson.id === lessonID ?
+    //                     'red' : 'black',
+    //                     cursor: 'pointer'
+    //                 }}
+    //                 onClick={() => setLessonID(lesson.id)}
+    //             >
+    //                 {lesson.name}
+    //             </li>
+    //         ))}
+    //     </div>
+    // )
+
+    //useLayoutEffect hook
+
+    const [count , setCount] = useState(0)
+
+    useLayoutEffect(() => {
+        if (count > 3) {
+            setCount(0)
         }
+    } , [count])
 
-        window.addEventListener(`lesson-${lessonID}` , handleEvent)
-
-        return () => {
-            window.removeEventListener(`lesson-${lessonID}` , handleEvent)
-        }
-    } , [lessonID])
+    const handleRun = () => {
+        setCount(count + 1)
+    }
 
     return (
         <div>
-            {lessons.map(lesson => (
-                <li
-                    key={lesson.id}
-                    style={{
-                        color: lesson.id === lessonID ?
-                        'red' : 'black',
-                        cursor: 'pointer'
-                    }}
-                    onClick={() => setLessonID(lesson.id)}
-                >
-                    {lesson.name}
-                </li>
-            ))}
+            <h1>{count}</h1>
+            <button
+                onClick={handleRun}
+            >
+                Run
+            </button>
         </div>
     )
+
+
 }
 
 export default Content;
