@@ -1,4 +1,4 @@
-import { useState , useMemo , useRef } from 'react'
+import { useReducer, useRef } from 'react'
 // import Content from './Content'
  
 // const gifts = [
@@ -21,6 +21,79 @@ import { useState , useMemo , useRef } from 'react'
 //     name: 'React JS'
 //   },
 // ]
+
+
+//1. Init state
+const initState = {
+  job: '',
+  jobs: []
+}
+
+//2. actions
+const SET_JOB = 'set_job'
+const ADD_JOB = 'add_job'
+const DELETE_JOB = 'delete_job'
+
+const setJob = payload => {
+  return {
+    type: SET_JOB,
+    payload
+  }
+}
+
+const addJob = payload => {
+  return {
+    type: ADD_JOB,
+    payload
+  }
+}
+
+const deleteJob = payload => {
+  return {
+    type: DELETE_JOB,
+    payload
+  }
+}
+
+//3. Reducer
+const reducer = (state , action) => {
+
+  console.log('Action:', action);
+  console.log('Pver state:', state);
+  
+  let newState
+
+  switch(action.type) {
+    case SET_JOB:
+      newState = {
+        ...state,
+        job: action.payload
+      }
+      break
+    case ADD_JOB:
+      newState = {
+        ...state,
+        jobs: [...state.jobs , action.payload]
+      }
+      break
+    case DELETE_JOB:
+      const newJobs = [...state.jobs]
+
+      newJobs.splice(action.payload , 1)
+
+      newState = {
+        ...state,
+        jobs: newJobs
+      }
+      break
+    default: 
+        throw new Error('Invalid action.')  
+  }
+
+  console.log('New state:' , newState);
+    
+  return newState
+}
 
 function App() {
   // const [info , setInfo] = useState({
@@ -198,55 +271,95 @@ function App() {
   //   </div>
   // )
 
-  const [name , setName] = useState('')
-  const [price , setPrice] = useState('')
-  const [products , setProducts] = useState([])
+  // const [name , setName] = useState('')
+  // const [price , setPrice] = useState('')
+  // const [products , setProducts] = useState([])
 
-  const nameRef = useRef()
+  // const nameRef = useRef()
+
+  // const handleSubmit = () => {
+  //   setProducts([
+  //     ...products , {
+  //       name,
+  //       price: +price
+  //     }
+  //   ])
+  //   setName('')
+  //   setPrice('')
+
+  //   nameRef.current.focus()
+  // }
+
+  // const total = useMemo(() => {
+  //   const result = products.reduce((result , prod) => 
+  //     result + prod.price,
+  //     0
+  //   )
+
+  //   return result
+  // } , [products])
+
+  // return (
+  //   <div style={{ padding:20 }}>
+  //     <input 
+  //       ref={nameRef}
+  //       value={name}
+  //       placeholder='Enter name...'
+  //       onChange={e => setName(e.target.value)}  
+  //     />
+  //     <br />
+  //     <input 
+  //       value={price}
+  //       placeholder='Enter price...'
+  //       onChange={e => setPrice(e.target.value)}  
+  //     />
+  //     <br />
+  //     <button onClick={handleSubmit} >Add</button>
+  //     <br />
+  //     Total: {total}
+  //     <ul>
+  //       {products.map((product , index) => (
+  //         <li key={index}>{product.name} - {product.price}</li>
+  //       ))}
+  //     </ul>
+  //   </div>
+  // )
+
+  // Todo App with useReducer hook
+
+  const [state , dispatch] = useReducer(reducer , initState)
+
+  const inputRef = useRef()
+
+  const { job , jobs } = state
 
   const handleSubmit = () => {
-    setProducts([
-      ...products , {
-        name,
-        price: +price
-      }
-    ])
-    setName('')
-    setPrice('')
+    dispatch(addJob(job))
+    dispatch(setJob(''))
 
-    nameRef.current.focus()
+    inputRef.current.focus()
   }
 
-  const total = useMemo(() => {
-    const result = products.reduce((result , prod) => 
-      result + prod.price,
-      0
-    )
-
-    return result
-  } , [products])
-
   return (
-    <div style={{ padding:20 }}>
+    <div style={{ padding: 20 }}>
+      <h3>Todo</h3>
       <input 
-        ref={nameRef}
-        value={name}
-        placeholder='Enter name...'
-        onChange={e => setName(e.target.value)}  
+        value={job}
+        ref={inputRef}
+        placeholder='Enter todo...'
+        onChange={e => {
+          dispatch(setJob(e.target.value))
+        }}
       />
-      <br />
-      <input 
-        value={price}
-        placeholder='Enter price...'
-        onChange={e => setPrice(e.target.value)}  
-      />
-      <br />
-      <button onClick={handleSubmit} >Add</button>
-      <br />
-      Total: {total}
+      <button onClick={handleSubmit}>Add</button>
       <ul>
-        {products.map((product , index) => (
-          <li key={index}>{product.name} - {product.price}</li>
+        {jobs.map((job , index) => (
+          <li key={index}>
+            {job}
+            <span onClick={() => dispatch(deleteJob(index))}> 
+              &times;
+            </span>
+          </li>
         ))}
       </ul>
     </div>
