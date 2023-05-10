@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState , useCallback } from 'react'
 import Content from './Content'
  
 // const gifts = [
@@ -183,12 +183,18 @@ function App() {
 
   //useEffect
 
-  const [show , setShow] = useState(false)
+  const [count , setCount] = useState(0)
+
+  const handleIncrease = useCallback(() => {
+    setCount(pver => pver + 1)
+  }, [])  
 
   return (
-    <div style={{ padding: 20 }}>
-      <button onClick={() => setShow(!show)}>Toggle</button>
-      {show && <Content />}
+    <div style={{ padding: 20}}>
+      <Content 
+        onIncrease={handleIncrease} 
+      />
+      <h1>{count}</h1>
     </div>
   )
 

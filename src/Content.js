@@ -1,4 +1,4 @@
-import { useRef , useState } from 'react'
+import { memo } from 'react'
 
 //1. useEffect(callback)
 // - Gọi callcback mỗi khi re-render
@@ -32,7 +32,7 @@ import { useRef , useState } from 'react'
 //     }
 // ];
 
-function Content() {
+function Content({ onIncrease }) {
 
 //     const [title , setTitle] = useState('')
 //     const [posts , setPosts] = useState([])
@@ -254,28 +254,41 @@ function Content() {
 
     // useRef hook
 
-    const [count , setCount] = useState(60)
+    // const [count , setCount] = useState(60)
 
-    const timerID = useRef()
+    // const timerID = useRef()
 
-    const handleStart = () => {
-        timerID.current = setInterval(() => {
-            setCount(pver => pver - 1)
-        } , 1000)
-    }
+    // const handleStart = () => {
+    //     timerID.current = setInterval(() => {
+    //         setCount(pver => pver - 1)
+    //     } , 1000)
+    // }
 
-    const handleStop = () => {
-        clearInterval(timerID.current)
-    }
+    // const handleStop = () => {
+    //     clearInterval(timerID.current)
+    // }
+
+    // return (
+    //     <div style={{ padding: 20}}>
+    //         <h1>{count}</h1>
+    //         <button onClick={handleStart}>Start</button>
+    //         <button onClick={handleStop}>Stop</button>
+    //     </div>
+    // )
+
+    // React.memo HOC
+
+    console.log('Hello Guys!');
 
     return (
-        <div style={{ padding: 20}}>
-            <h1>{count}</h1>
-            <button onClick={handleStart}>Start</button>
-            <button onClick={handleStop}>Stop</button>
-        </div>
+        <>
+            <h1>Hello Guys!</h1>
+            <button onClick={onIncrease}>Click Me!</button>
+        </>
     )
+    
+
 
 }
 
-export default Content;
+export default memo(Content);
